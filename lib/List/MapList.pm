@@ -7,7 +7,7 @@ use warnings;
 use base qw(Exporter);
 our @EXPORT = qw(mapcycle maplist); 
 
-our $VERSION = '1.10';
+our $VERSION = '1.12';
 
 =head1 NAME
 
@@ -15,9 +15,9 @@ List::MapList -- map lists through a list of subs, not just one
 
 =head1 VERSION
 
-version 1.10
+version 1.12
 
- $Id: MapList.pm,v 1.5 2004/08/23 13:09:54 rjbs Exp $
+ $Id: MapList.pm,v 1.6 2005/03/18 21:03:41 rjbs Exp $
 
 =head1 SYNOPSIS
 
@@ -39,14 +39,13 @@ Contrived heterogenous transform
 Ultra-secure partial rot13:
 
  my $rotsome = [
-   sub { tr/a-zA-Z/n-za-mN-ZA-M/ },
-   sub { tr/a-zA-Z/n-za-mN-ZA-M/ },
-   sub { $_ },
+  sub { tr/a-zA-Z/n-za-mN-ZA-M/; $_ },
+  sub { tr/a-zA-Z/n-za-mN-ZA-M/; $_ },
+  sub { $_ },
  ];
 
- my @chars = split //, "Too many secrets.";
- mapcycle($rotsome, @chars);
- my $cyphertext = join //, @chars;
+ my $plaintext  = "Too many secrets.";
+ my $cyphertext = join '', mapcycle($rotsome, split //, $plaintext);
 
 =head1 DESCRIPTION
 
