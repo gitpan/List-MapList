@@ -1,4 +1,4 @@
-use Test::More tests => 4;
+use Test::More 'no_plan';
 
 use strict;
 use warnings;
@@ -34,17 +34,4 @@ my $code = [
 		[qw(10 10 10 10 0 0 0 0)],
 		"another map through incremental incrementing"
 	);
-}
-
-{
-	my $rotsome = [
-		sub { tr/a-zA-Z/n-za-mN-ZA-M/; $_ },
-		sub { tr/a-zA-Z/n-za-mN-ZA-M/; $_ },
-		sub { $_ },
-	];
-
-	my $plaintext  = "Too many secrets.";
-	my $cyphertext = join '', mapcycle($rotsome, split //, $plaintext);
-
-	is($cyphertext, "Gbo zaal frcertf.", "correct cyphertext");
 }

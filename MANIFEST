@@ -1,17 +1,9 @@
-Changes
-LICENSE
-MANIFEST
-META.json
-META.yml
-Makefile.PL
-README
-dist.ini
 lib/List/MapList.pm
-t/00-compile.t
-t/000-report-versions-tiny.t
+Makefile.PL
+MANIFEST			This list of files
 t/mapcycle.t
 t/maplist.t
 t/mutate.t
+t/pod.t
 t/rotsome.t
-xt/release/changes_has_content.t
-xt/release/pod-syntax.t
+META.yml                                 Module meta-data (added by MakeMaker)
