@@ -1,12 +1,33 @@
-package List::MapList;
-
 use strict;
 use warnings;
+package List::MapList;
+{
+  $List::MapList::VERSION = '1.123';
+}
+# ABSTRACT: map lists through a list of subs, not just one
 
-use base qw(Exporter);
+use Exporter 5.57 'import';
 our @EXPORT = qw(mapcycle maplist); ## no critic
 
-our $VERSION = '1.122';
+
+sub maplist {
+	my ($subs, $current) = (shift, 0);
+	my $code = sub { $subs->[$current++] || sub { () }; };
+	map { $code->()->() } @_;
+}
+
+
+sub mapcycle {
+	my ($subs, $current) = (shift, 0);
+	my $code = sub { $subs->[$current++ % @$subs]; };
+	map { $code->()->() } @_;
+}
+
+1;
+
+__END__
+
+=pod
 
 =head1 NAME
 
@@ -14,7 +35,7 @@ List::MapList - map lists through a list of subs, not just one
 
 =head1 VERSION
 
-version 1.122
+version 1.123
 
 =head1 SYNOPSIS
 
@@ -61,9 +82,7 @@ product attributes.)
 
 =head1 FUNCTIONS
 
-=over
-
-=item maplist
+=head2 maplist
 
   my @results = maplist(\@coderefs, LIST);
 
@@ -73,44 +92,22 @@ reference is used for the first list member, the next for the second, and so
 on.  Once the last code reference has been used, all further elements will be
 mapped to C<()>.
 
-=cut
-
-sub maplist {
-	my ($subs, $current) = (shift, 0);
-	my $code = sub { $subs->[$current++] || sub { () }; };
-	map { $code->()->() } @_;
-}
-
-=item mapcycle
+=head2 mapcycle
 
   my @results = mapcycle($coderefs, LIST);
 
 This routine is identical to C<maplist>, but will cycle through the passed
 coderefs over and over as needed.
 
-=cut
-
-sub mapcycle {
-	my ($subs, $current) = (shift, 0);
-	my $code = sub { $subs->[$current++ % @$subs]; };
-	map { $code->()->() } @_;
-}
-
-=back
-
-=head1 TODO
-
-...nothing?
-
 =head1 AUTHOR
 
-Ricardo SIGNES E<lt>rjbs@cpan.org<gt>
+Ricardo SIGNES <rjbs@cpan.org>
 
-=head1 COPYRIGHT
+=head1 COPYRIGHT AND LICENSE
 
-This code is Copyright 2004-2006, Ricardo SIGNES.  It is free software,
-available under the same terms as Perl itself.
+This software is copyright (c) 2004 by Ricardo SIGNES.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-1;
